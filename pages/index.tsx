@@ -5,10 +5,18 @@ import type { Quote } from "@prisma/client";
 
 import prisma from '../lib/prisma'
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const count = await prisma.quote.count();
+export const config = {
+  runtime: 'experimental-edge',
+}
 
-  const randomNo = Math.floor(Math.random() * count);
+export const getServerSideProps: GetServerSideProps = async () => {
+  const count = await prisma.quote.count({
+    select: {
+      id: true
+    }
+  });
+
+  const randomNo = Math.floor(Math.random() * count.id);
 
   const quote = await prisma.quote.findUnique({
     where: { id: randomNo, }
@@ -42,7 +50,7 @@ const Index: React.FC<Props> = (props) => {
           <div className="flex flex-wrap justify-center gap-4 mt-8">
             <button className="block w-full px-12 py-3 text-sm font-medium text-red-600 rounded shadow sm:w-auto hover:text-red-700 active:text-red-500 focus:outline-none focus:ring"
               onClick={() => router.reload()}>
-              Another One
+              Another One 🔄
             </button>
           </div>
         </div>

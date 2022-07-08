@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client/edge";
-
+import { log } from 'next-axiom'
 // PrismaClient is attached to the `global` object in development to prevent
 // exhausting your database connection limit.
 //
@@ -24,7 +24,7 @@ prisma.$use(async (params, next) => {
 
   const after = Date.now()
 
-  console.log(`Query ${params.model}.${params.action} took ${after - before}ms`)
+  log.info(`Query ${params.model}.${params.action} took ${after - before}ms`)
 
   return result
 })

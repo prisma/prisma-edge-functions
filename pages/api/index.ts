@@ -1,15 +1,30 @@
 import prisma from '../../lib/prisma'
 
-export default async function handler(req, res) {
-  const count = await prisma.quote.count();
+export const config = {
+  runtime: 'experimental-edge',
+};
 
-  const randomNo = Math.floor(Math.random() * count);
+export default async function handler() {
+  const count = await prisma.quote.count({
+    select: {
+      id: true
+    }
+  });
+
+  const randomNo = Math.floor(Math.random() * count.id);
 
   const quote = await prisma.quote.findUnique({
     where: { id: randomNo, }
   })
+  console.log({ quote })
 
   // seriaize and deserialize Date values
-
-  res.status(200).json({ quote: JSON.parse(JSON.stringify(quote)) })
+  return new Response(
+    JSON.stringify(quote),
+    {
+      status: 200,
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
 }
