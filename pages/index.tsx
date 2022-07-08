@@ -1,61 +1,54 @@
 import React from "react";
-import type { GetStaticProps } from "next";
-import Layout from "../components/Layout";
-import Post, { PostProps } from "../components/Post";
+import { useRouter } from 'next/router'
+import type { GetServerSideProps } from "next";
+import type { Quote } from "@prisma/client";
+
 import prisma from '../lib/prisma'
 
-export const getStaticProps: GetStaticProps = async () => {
-  const feed = await prisma.post.findMany({
-    where: {
-      published: true,
-    },
-    include: {
-      author: {
-        select: {
-          name: true,
-        },
-      },
-    },
-  });
+export const getServerSideProps: GetServerSideProps = async () => {
+  const count = await prisma.quote.count();
+
+  const randomNo = Math.floor(Math.random() * count);
+
+  const quote = await prisma.quote.findUnique({
+    where: { id: randomNo, }
+  })
+
+  // seriaize and deserialize Date values
   return {
-    props: { feed },
-    revalidate: 10,
-  };
-};
+    props: { quote: JSON.parse(JSON.stringify(quote)) }
+  }
+}
 
 type Props = {
-  feed: PostProps[];
+  quote: Quote;
 };
 
-const Blog: React.FC<Props> = (props) => {
+
+const Index: React.FC<Props> = (props) => {
+  const router = useRouter()
   return (
-    <Layout>
-      <div className="page">
-        <h1>Public Feed</h1>
-        <main>
-          {props.feed.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
-            </div>
-          ))}
-        </main>
+    <section className="bg-gray-50">
+      <div className="max-w-screen-xl px-4 py-32 mx-auto lg:h-screen lg:items-center lg:flex">
+        <div className="max-w-xl mx-auto text-center">
+          <h1 className="text-3xl font-extrabold sm:text-5xl">
+            {props.quote.content}
+          </h1>
+
+          <p className="mt-4 sm:leading-relaxed sm:text-xl">
+            {props.quote.author}
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-4 mt-8">
+            <button className="block w-full px-12 py-3 text-sm font-medium text-red-600 rounded shadow sm:w-auto hover:text-red-700 active:text-red-500 focus:outline-none focus:ring"
+              onClick={() => router.reload()}>
+              Another One
+            </button>
+          </div>
+        </div>
       </div>
-      <style jsx>{`
-        .post {
-          background: white;
-          transition: box-shadow 0.1s ease-in;
-        }
-
-        .post:hover {
-          box-shadow: 1px 1px 3px #aaa;
-        }
-
-        .post + .post {
-          margin-top: 2rem;
-        }
-      `}</style>
-    </Layout>
+    </section>
   );
 };
 
-export default Blog;
+export default Index;
