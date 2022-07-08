@@ -12,7 +12,7 @@
     "start": "next start",
     "vercel-build": "npm run prisma:generate && npm run prisma:migrate && next build",
     "prisma:generate": "prisma generate --data-proxy",
-    "prisma:migrate:dev": "DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma migrate dev"
+    "prisma:migrate": "DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma migrate deploy"
   },
   "dependencies": {
     "@prisma/client": "4.0.0",
