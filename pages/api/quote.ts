@@ -4,21 +4,18 @@ export const config = {
   runtime: 'experimental-edge',
 };
 
-export default async function handler() {
-  const count = await prisma.quote.count({
-    select: {
-      id: true
-    }
-  });
+export default async function () {
+  const count = await prisma.quote.aggregate({
+    _count: true,
+  })
 
-  const randomNo = Math.floor(Math.random() * count.id);
+  const randomNo = Math.floor(Math.random() * count._count);
 
   const quote = await prisma.quote.findUnique({
     where: { id: randomNo, }
   })
   console.log({ quote })
 
-  // seriaize and deserialize Date values
   return new Response(
     JSON.stringify(quote),
     {
@@ -26,5 +23,6 @@ export default async function handler() {
       headers: {
         'content-type': 'application/json',
       },
-    })
+    }
+  )
 }
