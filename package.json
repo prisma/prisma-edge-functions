@@ -10,8 +10,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "vercel-build": "npm run prisma:generate && npm run prisma:migrate && next build",
-    "prisma:generate": "prisma generate --data-proxy",
+    "vercel-build": "npm run prisma:migrate && next build",
     "prisma:migrate": "prisma migrate deploy"
   },
   "dependencies": {
