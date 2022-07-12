@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client/edge";
+import { PrismaClient } from "@prisma/client";
 import { log } from 'next-axiom'
 // PrismaClient is attached to the `global` object in development to prevent
 // exhausting your database connection limit.
