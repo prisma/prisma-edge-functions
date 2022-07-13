@@ -9,7 +9,7 @@ export const config = {
   runtime: 'experimental-edge',
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const count = await prisma.quote.count({
     select: {
       id: true
@@ -21,6 +21,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const quote = await prisma.quote.findUnique({
     where: { id: randomNo, }
   })
+
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=120, stale-while-revalidate=600'
+  )
 
   // seriaize and deserialize Date values
   return {
