@@ -25,7 +25,7 @@
     "autoprefixer": "10.4.16",
     "postcss": "8.4.31",
     "prisma": "4.11.0",
-    "tailwindcss": "3.2.7",
+    "tailwindcss": "3.3.5",
     "ts-node": "10.9.1",
     "typescript": "5.2.2"
   },
