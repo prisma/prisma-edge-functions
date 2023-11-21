@@ -10,8 +10,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "vercel-build": "npm run prisma:migrate && next build",
-    "prisma:migrate": "DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma migrate deploy"
+    "postinstall": "prisma generate --no-engine"
   },
   "dependencies": {
     "@prisma/client": "5.6.0",
