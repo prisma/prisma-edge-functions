@@ -4,8 +4,6 @@ This sample application shows how to work with traditional relational databases 
 
 [Guide](https://www.prisma.io/blog/database-access-on-the-edge-8F0t1s1BqOJE#demo-database-access-on-the-edge)
 
-**Note**: The app uses Prisma Data Proxy. I recommend using [Prisma Accelerate](https://www.prisma.io/data-platform/accelerate) over Data Proxy.
-
 Getting started:
 
 ```
