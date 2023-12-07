@@ -8,5 +8,5 @@ This sample application shows how you can work with traditional relational datab
 Getting started:
 
 ```
-npx create-next-app --example https://github.com/ruheni/prisma-edge-functions/tree/starter prisma-edge-functions
+npx create-next-app --example https://github.com/prisma/prisma-edge-functions/tree/starter prisma-edge-functions
 ```
